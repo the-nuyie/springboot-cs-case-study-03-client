@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+
+    <Properties>
+        <Property name="LOG_PATTERN_CONSOLE">%style{%d{ISO8601}}{black} %highlight{%-5level }[%style{%t}{bright,blue}] %style{%C{1.}}{bright,yellow}: %msg%n%throwable</Property>
+        <Property name="APP_LOG_PATH">D:/code_workspaces/workspace_cs_refactor/EXAMPLE/springboot-cs-case-study-02/LOGS</Property>
+        <Property name="BASE_LOG_FILENAME">springboot-cs-case-study-02</Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout
+                    pattern="${LOG_PATTERN_CONSOLE}" />
+        </Console>
+
+        <RollingFile name="RollingFile"
+                     fileName="${APP_LOG_PATH}/${BASE_LOG_FILENAME}.log"
+                     filePattern="${APP_LOG_PATH}/$${date:yyyy-MM}/${BASE_LOG_FILENAME}-%d{-dd-MMMM-yyyy}-%i.log.gz">
+            <PatternLayout>
+                <pattern>%d %p %C{1.} [%t] %m%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <!-- rollover on startup, daily and when the file reaches
+                    10 MegaBytes -->
+                <OnStartupTriggeringPolicy />
+                <SizeBasedTriggeringPolicy
+                        size="10 MB" />
+                <TimeBasedTriggeringPolicy />
+            </Policies>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <!-- LOG everything at INFO level -->
+        <Root level="debug">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="RollingFile" />
+        </Root>
+
+        <!-- LOG "com.training.java.springboot*" at TRACE level -->
+        <Logger name="com.training.java.springboot" level="debug"></Logger>
+        <Logger name="org.springframework.beans" level="info"></Logger>
+        <Logger name="org.quartz" level="info"></Logger>
+    </Loggers>
+
+</Configuration>
